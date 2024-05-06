@@ -4,6 +4,7 @@ you may not use this file except in compliance with the License.
 Raganork MD - Sourav KL11
 */
 function containsDisallowedWords(str,disallowedWords) {
+    str = str.toLowerCase()
     for (let word of disallowedWords){
       if (str.match(word)){
         let otherWords = str.replace(word,'±').split('±')
@@ -685,7 +686,7 @@ const oldSudo = config.SUDO?.split(",")
             if (antiwordWarn.includes(message.jid)) return;
             let disallowedWords = (process.env.ANTI_WORDS || "nigga,fuck").split(",");
             if (process.env.ANTI_WORDS == 'auto') disallowedWords = require('badwords/array');
-            let thatWord = containsDisallowedWords(message.message.toLowerCase(),disallowedWords)
+            let thatWord = containsDisallowedWords(message.message,disallowedWords)
             if (thatWord){
                 await message.sendReply(`_The word ${thatWord} is not allowed in this chat!_`);
                 await message.client.groupParticipantsUpdate(message.jid, [message.sender], "remove")
