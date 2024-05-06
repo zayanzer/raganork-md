@@ -685,7 +685,7 @@ const oldSudo = config.SUDO?.split(",")
             if (antiwordWarn.includes(message.jid)) return;
             let disallowedWords = (process.env.ANTI_WORDS || "nigga,fuck").split(",");
             if (process.env.ANTI_WORDS == 'auto') disallowedWords = require('badwords/array');
-            let thatWord = containsDisallowedWords(message.message,disallowedWords)
+            let thatWord = containsDisallowedWords(message.message.toLowerCase(),disallowedWords)
             if (thatWord){
                 await message.sendReply(`_The word ${thatWord} is not allowed in this chat!_`);
                 await message.client.groupParticipantsUpdate(message.jid, [message.sender], "remove")
