@@ -208,7 +208,7 @@ Module({
         let {result} = await tiktok(link)
         await msg.sendReply({url:result},'video')        
     } catch (error) {
-        await msg.sendReply("_Server busy!_")
+        await msg.sendReply("```"+`Download failed\n\nResponse: ${result}`+"```")
     }
       }));
     Module({
