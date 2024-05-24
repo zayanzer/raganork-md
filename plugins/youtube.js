@@ -144,6 +144,7 @@ Module({
   if (sr.length < 1) return await message.sendReply(Lang.NO_RESULT);
   let searchImage = await getSearchImage(sr[0].id);
   let list = {
+    type:'single_select',
     head: {
       title: "Matching songs for "+match[1],
       subtitle:"",
