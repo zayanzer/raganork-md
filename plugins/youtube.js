@@ -89,7 +89,7 @@ Module({
   let list = {
     type: 'single_select',
     head: {
-      title: "Select a resolution",
+      title: "*Select a resolution*",
       subtitle:"",
       footer: `Avaiable resolutions: ${result_.length}`
     },
@@ -146,7 +146,7 @@ Module({
   let list = {
     type:'single_select',
     head: {
-      title: "Matching songs for "+match[1],
+      title: "*Matching songs for "+match[1]+'*',
       subtitle:"",
       footer: "Showing "+sr.length+" results"
     },
@@ -219,7 +219,7 @@ return await message.sendInteractiveMessage(message.jid, buttons,{quoted: messag
   let list = {
     type: 'single_select',
     head: {
-      title: "Matching results for "+match[1],
+      title: "*Matching results for "+match[1]+'*',
       subtitle:"",
       footer: ''
     },
