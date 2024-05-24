@@ -34,14 +34,14 @@ async function getVideo(vid,res_='360p',m=false){
     file.write(chunk); // Write chunk to file
   }
   clearInterval(progressInterval)
-  await m.edit(`_Downloading ${res_}: 100%_`,m.jid,m.progressKey)
+  if (m) await m.edit(`_Downloading ${res_}: 100%_`,m.jid,m.progressKey);
   return `./temp/ytv.mp4`
 };
 async function ytv(vid,res_='360p',m){
   const video = await getVideo(vid,res_,m);
-  await m.edit(`_Downloading audio.._`,m.jid,m.progressKey)
+  if (m) await m.edit(`_Downloading audio.._`,m.jid,m.progressKey)
   const audio = await dlSong(vid)
-  await m.edit(`_Mixing audio & video.._`,m.jid,m.progressKey)
+  if (m) await m.edit(`_Mixing audio & video.._`,m.jid,m.progressKey)
   return await require('./misc').avMix(video,audio)
 }
 async function getResolutions(vid){
