@@ -1,91 +1,37 @@
+const fetch = global.fetch || require("node-fetch");
+const REGEX = /\["(\bhttps?:\/\/[^"]+)",(\d+),(\d+)\],null/g;
+
 /**
- * Google Image Search
- * Thanks to Jibble330 (https://github.com/Jibble330) for this nice idea.
+ * 
+ * Async version of g-i-s module, source: npm
+ * @async
+ * @param {String} searchTerm Search term to search
+ * @param {Object} options Options for search
+ * @param {Object} options.query You can use a custom query
+ * @param {String} options.userAgent User agent for request
+ * @returns {Promise<[{url: string, height: number, width: number }]>} Array of results
  */
-
-const axios = require("axios");
-
-module.exports = {
-     gis: async (query, limit = 5) => {
-    try {
-    if (!query) throw new Error("You cannot have an empty query!");
-    let urlsArray = [];
-    const params = {
-        q: query, 
-        tbm: "isch",
-        hl: "en",
-        gl: "in",
-        ijn: "0", 
-    };
-    const headers = {
-      "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36",
-      "Accept-Encoding": "application/json",
-  };
+async function gis(searchTerm, options = {}) {
+    if (!searchTerm || typeof searchTerm !== "string") throw new TypeError("searchTerm must be a string.");
+    if (typeof options !== "object") throw new TypeError("options argument must be an object.");
   
-    const res = await axios.get("https://www.google.com/search", { headers: headers, params: params });
-    let body = res.data;
-    body = body.slice(body.lastIndexOf("AF_initDataCallback"));
-    body = body.slice(body.indexOf("["));
-    body = body.slice(0, body.indexOf("</script>")-1);
-    body = body.slice(0, body.lastIndexOf(","));
-    
-    const img = JSON.parse(body);
-
-    const imgObjects = img[56][1][0][0][1][0];
-
-    for (let i = 0; i < limit; i++) {
-        if (imgObjects[i] && imgObjects[i][0][0]["444383007"][1]) {
-            let url = imgObjects[i][0][0]["444383007"][1][3][0]; // the url
-            urlsArray.push(url);
-        }
-    }
-    return urlsArray;
-} catch (error) {
-    console.log("GIS error",error.message)    
-    return []
-}
-
-},
-pinSearch: async (query, limit = 5) => {
-    try {
-    if (!query) throw new Error("You cannot have an empty query!");
-    let urlsArray = [];
-    const params = {
-        q: "pinterest "+query, 
-        tbm: "isch",
-        hl: "en",
-        gl: "in",
-        ijn: "0", 
-    };
-    const headers = {
-      "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36",
-      "Accept-Encoding": "application/json",
-  };
+    const {
+      query = {},
+      userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+    } = options,
+      body = await fetch(`http://www.google.com/search?${new URLSearchParams({ ...query, udm: "2", tbm: "isch", q: searchTerm })}`, { headers: { "User-Agent": userAgent } }).then(res => res.text()),
+      content = body.slice(body.lastIndexOf("ds:1"), body.lastIndexOf("sideChannel")),
+      results = [];
   
-    const res = await axios.get("https://www.google.com/search", { headers: headers, params: params });
-    let body = res.data;
-    body = body.slice(body.lastIndexOf("AF_initDataCallback"));
-    body = body.slice(body.indexOf("["));
-    body = body.slice(0, body.indexOf("</script>")-1);
-    body = body.slice(0, body.lastIndexOf(","));
-    
-    const img = JSON.parse(body);
-
-    const imgObjects = img[56][1][0][0][1][0];
-
-    for (let i = 0; i < limit; i++) {
-        if (imgObjects[i] && imgObjects[i][0][0]["444383007"][1]) {
-            let url = imgObjects[i][0][0]["444383007"][1][3][0]; // the url
-            if (url.includes('pinimg')) urlsArray.push(url);
-        }
-    }
-    return urlsArray;
-} catch (error) {
-    console.log("GIS_PIN error",error.message)    
-    return []
-}
-
-}
-}
+    let result;
+  
+    while (result = REGEX.exec(content))
+      results.push({
+        url: result[1],
+        height: +result[2],
+        width: +result[3]
+      });
+  
+    return results;
+  }
+module.exports = {gis}
