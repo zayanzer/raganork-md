@@ -66,7 +66,7 @@ Module({
   usage:'.spotify link here',
   use: 'download'
 }, (async (message, match) => {
-  match[1] = match[1].match(/\bhttps?:\/\/\S+/gi)[0]
+  match[1] = match[1].match(/\bhttps?:\/\/\S+/gi)?.[0]
 if (!match[1]) return message.sendReply("_Need a spotify URL_")
   let spotifyTitle = await require("axios")(`https://api.raganork.online/api/spotify?url=${match[1]}`)
   if (!spotifyTitle.data.result) return message.sendReply("_Download failed, please search the same using the .song command_")
