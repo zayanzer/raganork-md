@@ -390,7 +390,7 @@ Module({
 }, async (message, match) => {
     if (!match[1]) return await message.sendReply("_Need a movie/series name_");
     var news = [];
-    var res = (await axios(`https://raganork.tk/api/subtitles?query=${match[1]}`)).data
+    var res = (await axios(`https://api.raganork.online/api/subtitles?query=${match[1]}`)).data
 	if (!res) return await message.sendReply('_No results!_');
     if (res?.length && !('dl_url' in res)){
     var list = `_*Subtitles matching "${match[1]}":*_\n\n`
