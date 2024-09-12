@@ -157,7 +157,18 @@ Module({
     usage: '.gpt Write a short note about Lionel Messi'
 }, (async (message, match) => {
     if (!match[1]) return await message.sendReply("Need any query!");
-    const {response} = await getJson('https://chat.raganork.online/api/chat?content='+encodeURIComponent(match[1]))
+    let response;
+    const maxRetries = 3;
+    for (let x = 1; x <= maxRetries; x++) {
+        try {
+            response = (await getJson('https://chat.raganork.online/api/chat?content=' + encodeURIComponent(match[1]))).response;
+            break;
+        } catch (error) {
+            if (x === maxRetries) {
+                console.error("Failed after max retries", error);
+            }
+        }
+    }
     return await message.sendReply(response || "_Request failed!_")
 }));
 Module({
