@@ -157,9 +157,8 @@ Module({
     usage: '.gpt Write a short note about Lionel Messi'
 }, (async (message, match) => {
     if (!match[1]) return await message.sendReply("Need any query!");
-    const result = await getJson('https://chat.raganork.online/api/chat?content='+encodeURIComponent(match[1]))
-    const text = result.result?result.result:result;
-    return await message.sendReply(text)
+    const {response} = await getJson('https://chat.raganork.online/api/chat?content='+encodeURIComponent(match[1]))
+    return await message.sendReply(response || "_Request failed!_")
 }));
 Module({
     pattern: 'zipcode ?(.*)',
