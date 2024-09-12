@@ -158,18 +158,24 @@ Module({
 }, (async (message, match) => {
     if (!match[1]) return await message.sendReply("Need any query!");
     let response;
-    const maxRetries = 3;
-    for (let x = 1; x <= maxRetries; x++) {
-        try {
-            response = (await getJson('https://chat.raganork.online/api/chat?content=' + encodeURIComponent(match[1]))).response;
-            break;
-        } catch (error) {
-            if (x === maxRetries) {
-                console.error("Failed after max retries", error);
-            }
+const maxRetries = 3;
+const timeout = 15000;
+
+for (let x = 1; x <= maxRetries; x++) {
+    try {
+        const result = await axios.get('https://chat.raganork.online/api/chat', {
+            params: { content: match[1] },
+            timeout: timeout,
+        });
+        response = result.data.response;
+        break;
+    } catch (error) {
+        if (x === maxRetries) {
+            response = "_Request failed!_"
         }
     }
-    return await message.sendReply(response || "_Request failed!_")
+}
+    return await message.sendReply(response)
 }));
 Module({
     pattern: 'zipcode ?(.*)',
