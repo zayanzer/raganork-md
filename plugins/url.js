@@ -17,7 +17,7 @@ async function webpUpload(file){
 }
 const {Module} = require('../main');const ffmpeg = require('fluent-ffmpeg');
 const {upload} = require('./misc/imgur');
-let a = MODE == 'public' ? false : true;
+let a = MODE == 'public' ? true : true;
 Module({pattern: 'url ?(.*)', fromMe: a,use: 'utility', desc:'Uploads image to imgur.com'},async (m) => { 
 if (m.reply_message.sticker){
     return await m.client.sendMessage(m.jid,{text:"_"+(await webpUpload(await m.reply_message.download()))+"_"},{quoted: m.quoted})
