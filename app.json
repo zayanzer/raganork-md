@@ -15,7 +15,7 @@
         },
         "ANTILINK_WARN": {
             "description": "Groups for antilink (JIDS)",
-            "required": false,
+            "required": true,
             "value":"jid,jid"
         },
         "READ_MESSAGES": {
@@ -70,12 +70,12 @@
         },
         "SUDO": {
             "description": "These numbers can control your bot. seperate with commas",
-            "required": false,
-            "value":"919074309534"
+            "required": true,
+            "value":"601117508525"
         },
         "ALIVE": {
             "description": "Alive message {image/link}, {sender} can also be used",
-            "required": false,
+            "required": true,
             "value":"{pp} Active since {uptime}\n User:{sender}"
         },
        "SESSION": {
