@@ -9,7 +9,7 @@ Module({
     fromMe: true,
     desc: 'Lists numbers registered on wa, not registered etc.',
     use: 'whatsapp',
-    usage: 'onwa +48888888xxx'
+    usage: 'onwa +601117508525'
 }, (async (message, match) => {
     if (!match[1]) return await message.sendReply("_Need number!_");
     let x = await message.send("_Processing.._");
