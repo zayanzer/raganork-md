@@ -32,7 +32,7 @@ const {
 } = require('raganork-bot');
 let configs = settingsMenu
 var handler = HANDLERS !== 'true'?HANDLERS.split("")[0]:""
-let fm = MODE == 'public' ? false : true
+let fm = MODE == 'public' ? : true
 const getID = /(?:http(?:s|):\/\/|)(?:(?:www\.|)youtube(?:\-nocookie|)\.com\/(?:watch\?.*(?:|\&)v=|embed|shorts\/|v\/)|youtu\.be\/)([-_0-9A-Za-z]{11})/;
 Module({
   pattern: 'play ?(.*)',
